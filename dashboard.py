@@ -28,12 +28,22 @@ st.subheader("Filtered Projects")
 st.dataframe(filtered_df)
 
 # 3. Render a Seaborn Chart inside Streamlit
-st.subheader("Project Delays (Days)")
+st.subheader("Budget vs Delay Days")
 fig, ax = plt.subplots()
 
-sns.barplot(data=filtered_df, x='Project', y='Delay_Days', hue='Domain', ax=ax)
-plt.xticks(rotation=45)
+# Scatter plot showing Budget on X and Delay Days on Y
+sns.scatterplot(
+    data=filtered_df, 
+    x='Budget_k', 
+    y='Delay_Days', 
+    hue='Domain', 
+    style='Domain',
+    s=100, 
+    ax=ax
+)
 
-
+# Label points with Project names
+for _, row in filtered_df.iterrows():
+    ax.annotate(row['Project'], (row['Budget_k'] + 2, row['Delay_Days']))
 
 st.pyplot(fig)
